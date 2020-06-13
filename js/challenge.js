@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const submit = document.getElementById("submit")
   let pause = document.getElementById("pause")
   let paused = false
-  var intervalID
   function startCounter() {
       return setInterval(increaseCounter, 1000)
   }
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
           currentTimer = startCounter()
           e.target.innerHTML = "Paused"
           paused = false
-      } else{
+      } else {
           toggleState()
           clearInterval(currentTimer)
           e.target.innerHTML = "Resume"
@@ -37,9 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
   function increaseCounter(){
       const timeCounter = parseInt(counter.innerText)
       counter.innerHTML = timeCounter +1
+      renderLikes()
   }
   plus.addEventListener("click", function(e){
       increaseCounter()
+      renderLikes()
   })
   function decreaseCounter(){
       const timeCounter = parseInt(counter.innerText)
@@ -56,7 +57,37 @@ document.addEventListener("DOMContentLoaded", function() {
       comment.appendChild(newComment)
       commentInput.value = ""
   })
+
+  const numOfTimes = {}
+
+  heart.addEventListener("click", (e) => {
+    const count = counter.innerText
+    if (!numOfTimes[count]) {
+        numOfTimes[count] = 1 
+    } else {
+        numOfTimes[count]++
+    }
   })
+
+  function renderLikes() {
+    const count = counter.innerText
+    const str = numOfTimes[count] ? numOfTimes[count] : 0
+    likes[0].innerText = `${count} was liked ${str} time(s).`
+  }
+
+})
+
+//   like.addEventListener("click", (e) => {
+//     let count = counter.innerText;
+//     let numOfTimes = 1
+//     let likes = document.getElementsByClassName("likes");
+//     if(likes[0].innerText.includes(count)) {
+//       numOfTimes++;
+//       likes[0].innerText = `${count} was liked ${numOfTimes} time(s).`;
+//     } else {
+//       likes.innerHTML += `<li> ${count} was liked ${numOfTimes} time(s).`;
+//     }
+//   });
 
 // what is innerHTML vs innerText
 // https://medium.com/better-programming/whats-best-innertext-vs-innerhtml-vs-textcontent-903ebc43a3fc
